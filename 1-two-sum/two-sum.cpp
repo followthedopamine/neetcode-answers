@@ -6,6 +6,9 @@
  * 57/57 cases passed (9 ms)
  * Your runtime beats 89.37 % of cpp submissions
  * Your memory usage beats 44.74 % of cpp submissions (10.8 MB)
+ *
+ * Time: O(n)
+ * Space: O(n)
  */
 
 #include <unordered_map>

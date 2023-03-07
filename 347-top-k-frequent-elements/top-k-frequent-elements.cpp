@@ -42,6 +42,13 @@
  * Your runtime beats 13.02 % of cpp submissions
  * Your memory usage beats 97.91 % of cpp submissions (13.5 MB)
  *
+ * Time complexity: O(n uk) (I think)
+ *
+ * Second attempt:
+ * Your runtime beats 83.11 % of cpp submissions
+ * Your memory usage beats 8.75 % of cpp submissions (15.5 MB)
+ *
+ * Time complexity O(n)
  *
  */
 
@@ -50,10 +57,41 @@
 using namespace std;
 
 // @lc code=start
+// Attempt 1:
+// class Solution {
+//  public:
+//   vector<int> topKFrequent(vector<int>& nums, int k) {
+//     unordered_map<int, int> map;
+//     for (int num : nums) {
+//       if (map.find(num) == map.end()) {
+//         map.insert({num, 1});
+//       } else {
+//         map[num]++;
+//       }
+//     }
+
+//     vector<int> result;
+//     for (int i = 0; i < k; i++) {
+//       pair<int, int> highest = {0, 0};
+//       for (pair<int, int> m : map) {
+//         if (m.second > highest.second) {
+//           highest = m;
+//         }
+//       }
+//       map.erase(highest.first);
+//       result.push_back(highest.first);
+//     }
+
+//     return result;
+//   }
+// };
+
+// Attempt 2:
 class Solution {
  public:
   vector<int> topKFrequent(vector<int>& nums, int k) {
     unordered_map<int, int> map;
+
     for (int num : nums) {
       if (map.find(num) == map.end()) {
         map.insert({num, 1});
@@ -62,18 +100,20 @@ class Solution {
       }
     }
 
-    vector<int> result;
-    for (int i = 0; i < k; i++) {
-      pair<int, int> highest = {0, 0};
-      for (pair<int, int> m : map) {
-        if (m.second > highest.second) {
-          highest = m;
-        }
-      }
-      map.erase(highest.first);
-      result.push_back(highest.first);
+    vector<vector<int>> bucket(nums.size() + 1);
+    for (auto m : map) {
+      bucket[m.second].push_back(m.first);
     }
 
+    vector<int> result;
+    for (int i = bucket.size() - 1; i > 0; i--) {
+      for (auto b : bucket[i]) {
+        result.push_back(b);
+      }
+      if (result.size() == k) {
+        return result;
+      }
+    }
     return result;
   }
 };
